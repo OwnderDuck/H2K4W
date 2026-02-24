@@ -1,3 +1,7 @@
+![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
+
+// L2K
+
 **Warning: Lacks thorough testing!!! | 警告：未经大量测试！！！**
 
 **You’re still helpful, even if it's just for translations. | 帮助我：即使只是翻译！**
