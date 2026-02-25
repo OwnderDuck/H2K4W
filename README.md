@@ -12,15 +12,11 @@
 
 **翻译：需要会英文的人**
 
-<p align="center">
-  <img src="docs/l2k.gif" width="600px" alt="L2K in action">
-</p>
-
-# L2K (Load 2 KeyboardLED) v3.3.1
+# H2K4W (Heartbeat 2(to) KeyboardLED 4(for) Windows) v0.0.0
 
 [**English**](docs/README_EN.md)
 
-Ultra-lightweight Linux system monitor. Gone are the complex GUIs—we use LEDs for display.
+Ultra-lightweight Windows system monitor. Gone are the complex GUIs—we use LEDs for display.
 
 超轻量级 Linux 系统监控工具，我们除去了繁杂的 GUI，使用 LED 灯来显示。
 
