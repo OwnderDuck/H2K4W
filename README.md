@@ -1,5 +1,7 @@
 ![Status](https://img.shields.io/badge/Status-In%20Development-orange?style=flat-square)
 
+`g++ -O2 -std=c++17 -mwindows -o H2K4W.exe H2K4W.cpp -lpdh -luser32 -lgdi32`
+
 // L2K
 
 **Warning: Lacks thorough testing!!! | 警告：未经大量测试！！！**
