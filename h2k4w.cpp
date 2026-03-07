@@ -1,5 +1,6 @@
 // H2K4W - Heartbeat to KeyboardLED for Windows
 // 将系统压力映射到键盘 ScrollLock 指示灯
+// 版本 0.2.0（含 mspt 显示）
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -16,7 +17,7 @@
 #pragma comment(lib, "pdh.lib")
 #pragma comment(lib, "user32.lib")
 
-#define H2K4WVER "0.1.0"
+#define H2K4WVER "0.2.0"
 
 // ==================== 全局状态 ====================
 static volatile bool g_alive = true;
@@ -201,12 +202,13 @@ int main() {
     int tick = 0;
     bool state = false;
     auto nextTick = std::chrono::steady_clock::now();
+    long long loopDurationNs = 0;      // 用于存储每次循环的实际耗时（纳秒）
 
     // 预热采样（确保第一次采样后有有效值）
     Sleep(1000);
 
     while (g_alive) {
-        auto loopStart = std::chrono::steady_clock::now();
+        auto tickStart = std::chrono::steady_clock::now();
         tick++;
 
         // 每 32 个 tick（约 320ms）采集一次新数据
@@ -217,11 +219,12 @@ int main() {
             double queue = GetDiskQueueLength();
 
             int exp = CalculateExperience(cpu, disk, ram, queue);
+            double mspt = loopDurationNs / 1000.0;  // 纳秒转微秒
 
             if (g_hasConsole) {
-                // 显示实时数据
-                printf("\rCPU:%3d%% Disk:%3d%% RAM:%3d%% Queue:%.1f Exp:%3d   ",
-                       cpu, disk, ram, queue, exp);
+                // 显示实时数据（包含 MSPT）
+                printf("\rCPU:%3d%% Disk:%3d%% RAM:%3d%% Queue:%.1f Exp:%3d MSPT:%6.2fus   ",
+                       cpu, disk, ram, queue, exp, mspt);
                 fflush(stdout);
             }
 
@@ -251,6 +254,10 @@ int main() {
         // 固定 10ms 心跳
         nextTick += std::chrono::milliseconds(10);
         std::this_thread::sleep_until(nextTick);
+
+        // 记录本次循环实际耗时（用于下一次显示 MSPT）
+        auto tickEnd = std::chrono::steady_clock::now();
+        loopDurationNs = std::chrono::duration_cast<std::chrono::nanoseconds>(tickEnd - tickStart).count();
     }
 
     // 退出前关闭灯
